@@ -83,7 +83,7 @@ cmd_pull() {
 }
 
 cmd_report() {
-  local base=${1:-upstream@{1}}
+  local base=${1:-}; [ -n "$base" ] || base='upstream@{1}'
   echo "== New Cursor-specific lines added upstream since $base =="
   git diff "$base" upstream -- skills agents docs README.md automations \
     | grep -E '^\+' | grep -vE '^\+\+\+' | grep -nE "$CURSORISMS" || echo "(none)"
@@ -99,7 +99,7 @@ cmd_push() {
 case "${1:-}" in
   check) cmd_check ;;
   pull) cmd_pull ;;
-  report) cmd_report "${2:-upstream@{1}}" ;;
+  report) cmd_report "${2:-}" ;;
   push) cmd_push ;;
   *) sed -n '2,12p' "$0"; exit 1 ;;
 esac
