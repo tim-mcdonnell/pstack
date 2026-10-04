@@ -1,3 +1,48 @@
+<!-- mirror:start — this top section is specific to the mirror. Everything after mirror:end is the upstream README from cursor/plugins/pstack, unchanged. To sync with upstream, follow MIRROR.md. -->
+# pstack — standalone mirror
+
+> **Mirror** of [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tree/main/pstack), kept in sync by a scheduled agent (see [MIRROR.md](./MIRROR.md)).
+> Cursor-only instructions are rewritten so the skills work in Claude Code, Codex, Pi, and OpenCode. Everything else is upstream, unchanged.
+> Approach and initial rewrites adapted from [`backnotprop/pstack`](https://github.com/backnotprop/pstack).
+
+Cursor's original README is [further down this page](#pstack).
+
+## Install
+
+pstack is a folder of plain [Agent Skills](https://agentskills.io) (`skills/<name>/SKILL.md`). The [`skills` CLI](https://skills.sh) installs them into Claude Code, Codex, Pi, Cursor, OpenCode, and other agents:
+
+```bash
+npx skills add <this repo's clone URL>
+```
+
+Select the skills you want, then the agents to install them into. Add `-g` for a user-level install.
+
+## Skills
+
+Standalone skills (they don't call other pstack skills):
+
+`unslop`, `bro`, `how`, `tdd`, `typescript-best-practices`, `arena`, `swarm`, `interrogate`, `reflect`, `show-me-your-work`, `figure-it-out`, `automate-me`, `correct`
+
+Skills that call other skills. Install these together:
+
+| Skill | Also install |
+|---|---|
+| `teach` | `how`, `why` |
+| `why` | `how` |
+| `technical-writing` | `unslop` |
+| `architect` | `arena`, `how` |
+| `blast-radius` | `arena`, `how`, `why`, `unslop` |
+| `create-verification-skill` | `maintain-verification-skill` |
+| `benchmark-checklist` | `principle-explain-the-number` |
+| `poteto-mode` | all `principle-*` skills and most of the other skills |
+
+## What this mirror changes
+
+Many skills referenced Cursor's `Task` tool, `AskQuestion`, `~/.cursor/rules/pstack-models.mdc`, Cursor transcript paths, and `cursor-team-kit` skills. Those lines now name the equivalent in other harnesses too. The full mapping is the **Harness** section of [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/SKILL.md) and the table in [MIRROR.md](./MIRROR.md). Nothing upstream is removed.
+<!-- mirror:end -->
+
+---
+
 # pstack
 
 i'm [poteto](https://x.com/poteto). i'm not a president or ceo, but i've worked with millions of lines of code at Meta, Netflix, and Cursor. i'm also on the react core team where i help build and maintain react compiler.
