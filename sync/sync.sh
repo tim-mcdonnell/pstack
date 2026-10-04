@@ -11,7 +11,7 @@
 # Cursor-only instructions) is the sync agent's job. See MIRROR.md.
 set -euo pipefail
 
-UPSTREAM_URL=https://github.com/cursor/plugins.git
+UPSTREAM_URL=${PSTACK_UPSTREAM_URL:-https://github.com/cursor/plugins.git}
 UPSTREAM_DIR=pstack
 REPO=$(git rev-parse --show-toplevel)
 WORK=${PSTACK_SYNC_WORK:-/tmp/pstack-sync}
@@ -34,11 +34,6 @@ fetch_upstream() {
   NEW_REV=$(git -C "$CLONE" rev-parse --short HEAD)
   NEW_VER=$(sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' "$CLONE/$UPSTREAM_DIR/.cursor-plugin/plugin.json")
   OLD_REV=$(cat "$REV_FILE" 2>/dev/null || echo none)
-}
-
-upstream_delta_files() {
-  # Only the pstack/ subtree matters. Compare the upstream branch before/after.
-  git diff --name-only "upstream@{1}" upstream 2>/dev/null || git diff --name-only "$1" upstream
 }
 
 cmd_check() {
@@ -71,10 +66,12 @@ cmd_pull() {
   fi
   git worktree remove --force "$UPWT"
   printf '%s\n' "$NEW_REV" > "$REV_FILE"
+  BEFORE=$(git rev-parse HEAD)
   if git merge --no-edit -m "Sync upstream cursor/plugins/pstack @ $NEW_REV ($NEW_VER)" upstream; then
     cp agents/comment-sicko.md skills/no-comments/references/comment-sicko.md
     git add -A
-    git commit -q --amend --no-edit
+    if [ "$(git rev-parse HEAD)" != "$BEFORE" ]; then git commit -q --amend --no-edit
+    elif ! git diff --cached --quiet; then git commit -q -m "Record upstream rev $NEW_REV"; fi
     echo "MERGED cleanly. Now review the report below and rewrite any new Cursor-only instructions."
   else
     cp agents/comment-sicko.md skills/no-comments/references/comment-sicko.md || true
