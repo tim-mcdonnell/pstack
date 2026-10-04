@@ -48,11 +48,34 @@ The authoritative mapping lives in the **Harness** section of `skills/poteto-mod
 | "a Cursor restart" and similar incidental mentions | "a Cursor or harness restart". |
 | `mcps/` directory Cursor exposes | MCP tools appear in the tool list, e.g. `mcp__<server>__<tool>` in Claude Code. |
 | Scripts (`*.sh`, `*.ts`) hard-coding `~/.cursor/projects` | Add the Claude Code and Pi paths alongside, as `worktree-audit.sh` does. |
+| Cursor model slugs (`claude-opus-5-5-max`, `grok-4.7-xhigh-fast`) in Claude Code | Covered once by the **Claude Code specifics** Harness bullet: `Agent` takes `opus`/`sonnet`/`haiku`; `gpt-*`/`grok-*` roles run on `opus` or go cross-provider via T3 `delegate_task`. Don't rewrite the slugs themselves; they are the settings-file vocabulary. |
+| macOS-only shell (`stat -f`, `date -r`, BSD `sed -i ''`) in scripts | Branch on GNU vs BSD at the top of the script, as `worktree-audit.sh` does. Not a Cursor-ism, but upstream is written on macOS and we run on Linux. |
+| Cursor-only frontmatter (`mode`, `icon`, `color`, `reminder`, `is_background`) | Leave it. Claude Code ignores unknown keys; `paths` and `disable-model-invocation` are shared vocabulary. |
 
 Leave alone: `README.md` below the `mirror:end` marker, `docs/guide/*` (upstream prose, mentions Cursor as the product and that is fine), `automations/benny/*` (Cursor cloud automations by design), `.cursor-plugin/plugin.json`, and `scripts/watch-pr/*` GitHub code that merely names Bugbot as a reviewer.
+
+## Beyond the grep
+
+The report in `sync/sync.sh` only catches known patterns. On every sync also check:
+
+- **New scripts** under `skills/*/scripts/` for macOS-only commands. Run any `.sh` once on this machine.
+- **New frontmatter keys** in `SKILL.md` and `agents/*.md`. Only add a mapping if a key breaks Claude Code's loader.
+- **New runtime dependencies** (`bun`, `node`, `rg`, `gh`). Note them in the mirror README if a skill cannot run without one.
+- **New model slugs or roles** in `setup-pstack`. The Claude Code specifics bullet in the Harness section must still describe how to map them.
+
+## Where this mirror differs from backnotprop/pstack
+
+backnotprop's rewrites were the seed. These are ours and must survive syncs:
+
+- Harness section bullets **Claude Code specifics** and **T3 Code specifics** in `skills/poteto-mode/SKILL.md`.
+- Pointers back to the Harness section in `playbooks/orchestrate.md`, `playbooks/opening-a-pr.md`, and `playbooks/multi-phase-plan.md`, which backnotprop left Cursor-only.
+- GNU/BSD portability in `scripts/worktree-audit.sh`.
+- `sync/sync.sh` and `.upstream-rev` instead of a manual checklist.
+
+When backnotprop ships a rewrite we lack, cherry-pick the idea, not the commit: our `main` history is not related to his.
 
 ## Sync agent brief
 
 This is the prompt the T3 Code scheduled task runs. It is reproduced here so a human can run the same thing by hand.
 
-> You maintain the pstack mirror at this repo. Run `sync/sync.sh check`. If it exits 0, reply with one line and stop. If it exits 10, run `sync/sync.sh pull`, then follow MIRROR.md "Sync procedure" steps 1 to 5: resolve conflicts, rewrite every new Cursor-specific instruction per the "Conversion rules" table, read any newly added skill or playbook in full, run the verification grep, and commit on `main`. Keep edits additive and minimal; never delete upstream content. Update the **Harness** section of `skills/poteto-mode/SKILL.md` if a new mapping was needed, and add the row to MIRROR.md's table. Finally run `sync/sync.sh push`. If push fails because the Forgejo remote is unreachable, say so and leave the commits local. Report: upstream old and new rev and version, files rewritten, anything left Cursor-only and why, and the push result.
+> You maintain the pstack mirror at this repo. Run `sync/sync.sh check`. If it exits 0, reply with one line and stop. If it exits 10, run `sync/sync.sh pull`, then follow MIRROR.md "Sync procedure" steps 1 to 5: resolve conflicts, rewrite every new Cursor-specific instruction per the "Conversion rules" table, read any newly added skill or playbook in full, run the verification grep, work through the "Beyond the grep" checklist, and commit on `main`. Keep edits additive and minimal; never delete upstream content. Update the **Harness** section of `skills/poteto-mode/SKILL.md` if a new mapping was needed, and add the row to MIRROR.md's table. Finally run `sync/sync.sh push`. If push fails because the Forgejo remote is unreachable, say so and leave the commits local. Report: upstream old and new rev and version, files rewritten, anything left Cursor-only and why, and the push result.
