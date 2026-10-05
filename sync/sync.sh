@@ -18,7 +18,7 @@ WORK=${PSTACK_SYNC_WORK:-/tmp/pstack-sync}
 CLONE=$WORK/cursor-plugins
 UPWT=$WORK/upstream-wt
 REV_FILE=$REPO/.upstream-rev
-CURSORISMS='\.cursor/|\.cursor-plugin|\.mdc\b|agent-transcripts|cursor-team-kit|create-skill|\bAskQuestion\b|\bTask\b tool|subagent_type: *"?generalPurpose|environment: *"cloud"|cloud_base_branch|[Cc]ursor cloud|[Bb]ugbot|cursor\.com|cursor agent'
+CURSORISMS='\.cursor/|\.cursor-plugin|\.mdc\b|agent-transcripts|cursor-team-kit|create-skill|\bAskQuestion\b|\bTask\b tool|subagent_type: *"?generalPurpose|environment: *"cloud"|cloud_base_branch|[Cc]ursor cloud|[Bb]ugbot|cursor\.com|cursor agent|[Cc]ustom [Mm]ode|add-plugin|Use as Mode'
 
 cd "$REPO"
 
