@@ -12,8 +12,10 @@ Cursor's original README is [further down this page](#pstack).
 pstack is a folder of plain [Agent Skills](https://agentskills.io) (`skills/<name>/SKILL.md`). The [`skills` CLI](https://skills.sh) installs them into Claude Code, Codex, Pi, Cursor, OpenCode, and other agents:
 
 ```bash
-npx skills add https://forgejo.tail99d67.ts.net/tim-mcdonnell/pstack.git
+npx skills add https://github.com/tim-mcdonnell/pstack.git
 ```
+
+On the tailnet, the Forgejo copy is identical: `https://forgejo.tail99d67.ts.net/tim-mcdonnell/pstack.git`.
 
 Select the skills you want, then the agents to install them into. Add `-g` for a user-level install.
 

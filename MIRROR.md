@@ -7,6 +7,8 @@ Two branches keep upstream and our edits apart:
 - `upstream` holds Cursor's `pstack/` folder byte for byte. Never edit it by hand.
 - `main` is `upstream` plus this mirror's edits: the top of `README.md`, this file, `sync/`, `.upstream-rev`, `skills/no-comments/references/comment-sicko.md`, and harness-neutral rewrites inside some skills.
 
+Both branches are published to two remotes that must stay identical: `origin` (Forgejo, tailnet only) and `github` (public, [`tim-mcdonnell/pstack`](https://github.com/tim-mcdonnell/pstack), for machines off the tailnet). Only `sync/sync.sh push` writes to them; it adds the `github` remote if a checkout lacks it.
+
 Never copy Cursor's files onto `main` directly. That erases the edits. Always go through `upstream` and merge.
 
 `.upstream-rev` records the `cursor/plugins` commit that `upstream` mirrors. `.cursor-plugin/plugin.json` stays on `main` only because upstream bumps its `version` every release; deleting it would cause a modify/delete conflict on every sync. It is inert outside Cursor.
@@ -17,7 +19,7 @@ Never copy Cursor's files onto `main` directly. That erases the edits. Always go
 sync/sync.sh check     # exit 0 = nothing to do, exit 10 = upstream moved
 sync/sync.sh pull      # refresh upstream branch, merge into main, print the Cursor-ism report
 # ...resolve conflicts / rewrite new Cursor-only instructions (see below)...
-sync/sync.sh push      # push main + upstream
+sync/sync.sh push      # push main + upstream to both remotes
 ```
 
 `pull` already refreshes the bundled Comment Sicko prompt (`skills/no-comments/references/comment-sicko.md` is a copy of `agents/comment-sicko.md`) and records the new rev.
@@ -80,4 +82,4 @@ When backnotprop ships a rewrite we lack, cherry-pick the idea, not the commit: 
 
 This is the prompt the T3 Code scheduled task runs. It is reproduced here so a human can run the same thing by hand.
 
-> You maintain the pstack mirror at this repo. Run `sync/sync.sh check`. If it exits 0, reply with one line and stop. If it exits 10, run `sync/sync.sh pull`, then follow MIRROR.md "Sync procedure" steps 1 to 5: resolve conflicts, rewrite every new Cursor-specific instruction per the "Conversion rules" table, read any newly added skill or playbook in full, run the verification grep, work through the "Beyond the grep" checklist, and commit on `main`. Keep edits additive and minimal; never delete upstream content. Update the **Harness** section of `skills/poteto-mode/SKILL.md` if a new mapping was needed, and add the row to MIRROR.md's table. Finally run `sync/sync.sh push`. If push fails because the Forgejo remote is unreachable, say so and leave the commits local. Report: upstream old and new rev and version, files rewritten, anything left Cursor-only and why, and the push result.
+> You maintain the pstack mirror at this repo. Run `sync/sync.sh check`. If it exits 0, reply with one line and stop. If it exits 10, run `sync/sync.sh pull`, then follow MIRROR.md "Sync procedure" steps 1 to 5: resolve conflicts, rewrite every new Cursor-specific instruction per the "Conversion rules" table, read any newly added skill or playbook in full, run the verification grep, work through the "Beyond the grep" checklist, and commit on `main`. Keep edits additive and minimal; never delete upstream content. Update the **Harness** section of `skills/poteto-mode/SKILL.md` if a new mapping was needed, and add the row to MIRROR.md's table. Finally run `sync/sync.sh push`. `push` tries both remotes; if one fails (Forgejo is unreachable off the tailnet), say which, and the next push catches it up. Report: upstream old and new rev and version, files rewritten, anything left Cursor-only and why, and the push result.

@@ -5,7 +5,8 @@
 #   sync/sync.sh pull     refresh the `upstream` branch, merge it into `main`, print the
 #                         Cursor-ism report for the upstream delta. Leaves conflicts in place.
 #   sync/sync.sh report   print Cursor-specific lines added upstream since the last sync
-#   sync/sync.sh push     push main + upstream to origin
+#   sync/sync.sh push     push main + upstream to origin (Forgejo) and github; a failure
+#                         on one remote does not skip the other but exits non-zero
 #
 # Mechanics are deterministic; judgment (conflict resolution, rewriting new
 # Cursor-only instructions) is the sync agent's job. See MIRROR.md.
@@ -13,6 +14,7 @@ set -euo pipefail
 
 UPSTREAM_URL=${PSTACK_UPSTREAM_URL:-https://github.com/cursor/plugins.git}
 UPSTREAM_DIR=pstack
+GITHUB_URL=${PSTACK_GITHUB_URL:-https://github.com/tim-mcdonnell/pstack.git}
 REPO=$(git rev-parse --show-toplevel)
 WORK=${PSTACK_SYNC_WORK:-/tmp/pstack-sync}
 CLONE=$WORK/cursor-plugins
@@ -93,7 +95,13 @@ cmd_report() {
 }
 
 cmd_push() {
-  git push origin main upstream
+  git remote get-url github >/dev/null 2>&1 || git remote add github "$GITHUB_URL"
+  local rc=0
+  for remote in origin github; do
+    echo "== push $remote =="
+    git push "$remote" main upstream || { echo "push to $remote FAILED" >&2; rc=1; }
+  done
+  return $rc
 }
 
 case "${1:-}" in
