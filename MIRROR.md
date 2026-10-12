@@ -46,7 +46,7 @@ The authoritative mapping lives in the **Harness** section of `skills/poteto-mod
 | `.cursor/skills/`, `~/.cursor/skills/` | Add `.claude/skills/`, `.pi/skills/`, `.agents/skills/` (project) and `~/.claude/skills/`, `~/.pi/agent/skills/`, `~/.codex/skills/`, `~/.agents/skills/` (user). |
 | `create-skill` (Cursor built-in) | "your skill-authoring skill: `create-skill` in Cursor or Anthropic's `skill-creator`; otherwise follow the Agent Skills format at agentskills.io." |
 | `deslop`, `control-cli`, `control-ui` (`cursor-team-kit`) | Point at the **Harness** section: without `deslop`, reread the diff and cut slop yourself; without control skills, drive the app with Playwright/CDP or tmux/PTY. |
-| `poteto-agent`, `Comment Sicko` as registered subagents | Spawn a general subagent whose prompt starts with the agent file's contents (`agents/*.md`). `no-comments` ships its copy under `references/`. |
+| `poteto-agent`, `comment-sicko` (Comment Sicko) as registered subagents | Spawn a general subagent whose prompt starts with the agent file's contents (`agents/*.md`). `no-comments` ships its copy under `references/`. |
 | "a Cursor restart" and similar incidental mentions | "a Cursor or harness restart". |
 | `mcps/` directory Cursor exposes | MCP tools appear in the tool list, e.g. `mcp__<server>__<tool>` in Claude Code. |
 | Scripts (`*.sh`, `*.ts`) hard-coding `~/.cursor/projects` | Add the Claude Code and Pi paths alongside, as `worktree-audit.sh` does. |
