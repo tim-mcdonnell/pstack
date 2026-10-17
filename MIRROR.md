@@ -50,8 +50,9 @@ The authoritative mapping lives in the **Harness** section of `skills/poteto-mod
 | "a Cursor restart" and similar incidental mentions | "a Cursor or harness restart". |
 | `mcps/` directory Cursor exposes | MCP tools appear in the tool list, e.g. `mcp__<server>__<tool>` in Claude Code. |
 | Scripts (`*.sh`, `*.ts`) hard-coding `~/.cursor/projects` | Add the Claude Code and Pi paths alongside, as `worktree-audit.sh` does. |
-| Cursor model slugs (`claude-opus-5-5-max`, `grok-4.7-xhigh-fast`, `cursor-grok-*`, `composer-*`) in Claude Code | Covered once by the **Claude Code specifics** Harness bullet: `Agent` takes `opus`/`sonnet`/`haiku`; `gpt-*`/`grok-*` roles run on `opus` or go cross-provider via T3 `delegate_task`. Don't rewrite the slugs themselves; they are the settings-file vocabulary. |
+| Cursor model slugs (`claude-opus-5-5-max`, `grok-4.7-xhigh-fast`, `cursor-grok-*`, `composer-*`) in Claude Code | Covered once by the **Claude Code specifics** Harness bullet: `claude-<family>-*-<effort>` becomes that family plus `effort` (tier mapping to `opus`/`sonnet` where `Agent` has no `effort`); `gpt-*`/`grok-*` roles run on `opus` or go cross-provider via T3 `delegate_task`. Don't rewrite the slugs themselves; they are the settings-file vocabulary. |
 | Per-spawn reasoning level and `-fast` speed (poteto-mode **Match the model to the job**, "Pick each subagent's reasoning level and fast or standard speed") | Covered once by the **Claude Code specifics** Harness bullet: the level goes through the tier mapping (and `effort` where `Agent` takes it); speed is dropped. Don't rewrite the per-skill sentences. |
+| `Task` fields `readonly`, `resume`, `file_attachments`; "open a todolist"; always-applied `.cursor/rules/*.mdc` | Covered once by the **Claude Code specifics** Harness bullet, taken from upstream's `docs/harness/claude-code.md`. Don't rewrite the per-skill uses. |
 | `/visualize` (named in `ketchup`, not shipped by pstack) | Point at the **Tools pstack doesn't ship** Harness bullet: a Mermaid chart, or an HTML page through the harness's preview tool (`html_render` in T3 Code). |
 | `poteto-agent` searching `~/.cursor/plugins/` for `poteto-mode/SKILL.md` | Add the other harnesses' skill folders (and `~/.claude/plugins/`), first match wins when no `.cursor-plugin/plugin.json` exists. |
 | macOS-only shell (`stat -f`, `date -r`, BSD `sed -i ''`) in scripts | Branch on GNU vs BSD at the top of the script, as `worktree-audit.sh` does. Not a Cursor-ism, but upstream is written on macOS and we run on Linux. |
@@ -59,7 +60,7 @@ The authoritative mapping lives in the **Harness** section of `skills/poteto-mod
 | Custom Modes (Option+Enter / Alt+Enter on a skill, "Use as Mode", the old "sticky mode") | "Other harnesses have no Custom Modes. In Claude Code an invoked skill stays in the transcript until compaction; reinvoke it or pin it from `CLAUDE.md` / `AGENTS.md`." Point at the **Custom Modes** Harness bullet. |
 | `/add-plugin pstack`, Customize sidebar | Add `npx skills add <repo url>` from the mirror README. |
 
-Leave alone: `README.md` below the `mirror:end` marker, `docs/guide/*` (upstream prose, mentions Cursor as the product and that is fine), `automations/benny/*` (Cursor cloud automations by design), `.cursor-plugin/plugin.json`, and `scripts/watch-pr/*` GitHub code that merely names Bugbot as a reviewer.
+Leave alone: `README.md` below the `mirror:end` marker, `docs/guide/*` (upstream prose, mentions Cursor as the product and that is fine), `docs/harness/claude-code.md` below its mirror note (upstream's adapter for Cursor's Claude Code plugin; fold new rows into the Harness section instead of editing it), `automations/benny/*` (Cursor cloud automations by design), `.cursor-plugin/plugin.json`, and `scripts/watch-pr/*` GitHub code that merely names Bugbot as a reviewer.
 
 ## Beyond the grep
 
@@ -78,6 +79,7 @@ backnotprop's rewrites were the seed. These are ours and must survive syncs:
 - Pointers back to the Harness section in `playbooks/orchestrate.md`, `playbooks/opening-a-pr.md`, `playbooks/multi-phase-plan.md`, `playbooks/autopilot-full.md`, `playbooks/shipping.md`, and `skills/ketchup/SKILL.md`, which backnotprop left Cursor-only.
 - The non-Cursor skill-folder search in `agents/poteto-agent.md`.
 - GNU/BSD portability in `scripts/worktree-audit.sh`.
+- The **Mirror note** at the top of `docs/harness/claude-code.md`, which says where the Harness section overrides upstream's Claude Code adapter.
 - `sync/sync.sh` and `.upstream-rev` instead of a manual checklist.
 
 When backnotprop ships a rewrite we lack, cherry-pick the idea, not the commit: our `main` history is not related to his.

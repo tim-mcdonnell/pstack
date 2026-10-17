@@ -19,6 +19,8 @@ On the tailnet, the Forgejo copy is identical: `https://forgejo.tail99d67.ts.net
 
 Select the skills you want, then the agents to install them into. Add `-g` for a user-level install.
 
+Cursor also publishes pstack as a Claude Code plugin (`/plugin install pstack@cursor-plugins`, see the upstream README below). That install uses upstream's [Claude Code adapter](./docs/harness/claude-code.md) and `/pstack:` prefixes. This mirror is for `npx skills` installs and for Codex, Pi, and OpenCode.
+
 ## Skills
 
 Standalone skills (they don't call other pstack skills):
@@ -65,6 +67,17 @@ fork it. improve it. make it yours. PRs are welcome!
 ```bash
 /add-plugin pstack
 ```
+
+in claude code:
+
+```bash
+/plugin marketplace add cursor/plugins
+/plugin install pstack@cursor-plugins
+```
+
+claude code prefixes plugin commands and agents, so `/poteto-mode` is `/pstack:poteto-mode`. the [claude code adapter](./docs/harness/claude-code.md) maps every other cursor name.
+
+claude code installs a generated copy of pstack from [`harness/pstack/`](https://github.com/cursor/plugins/tree/main/harness/pstack) at the repository root. after changing `skills/`, `agents/`, `docs/harness/claude-code.md`, or `plugin.json`, run `node scripts/generate-pstack-harness-trees.mjs` from the repository root and commit the result. ci fails until you do.
 
 ## get started
 
@@ -315,7 +328,7 @@ when a default changes, a rule written before the change still pins the old defa
 
 pstack also ships a dormant [benny automation pack](./automations/benny/). benny triages slack issue reports, then reproduces and fixes confirmed bugs with real ui evidence. its files are not registered as slash skills.
 
-to set it up, point cursor at [`FOR_AGENTS.md`](./automations/benny/FOR_AGENTS.md). setup copies the pack into the target repository at `.cursor/automations/benny/`, enables pstack there for shared skills, and keeps user configuration outside the copied pack.
+to set it up, point cursor at [`FOR_AGENTS.md`](./automations/benny/FOR_AGENTS.md). setup copies the pack into the target repository at `.cursor/automations/benny/`, enables pstack there for shared skills, and keeps user configuration outside the copied pack. benny runs on cursor automations, so it is cursor-only.
 
 ## license
 
