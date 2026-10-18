@@ -58,9 +58,12 @@ The authoritative mapping lives in the **Harness** section of `skills/poteto-mod
 | macOS-only shell (`stat -f`, `date -r`, BSD `sed -i ''`) in scripts | Branch on GNU vs BSD at the top of the script, as `worktree-audit.sh` does. Not a Cursor-ism, but upstream is written on macOS and we run on Linux. |
 | Cursor-only frontmatter (`mode`, `icon`, `color`, `reminder`, `is_background`) | Leave it. Claude Code ignores unknown keys; `paths` and `disable-model-invocation` are shared vocabulary. |
 | Custom Modes (Option+Enter / Alt+Enter on a skill, "Use as Mode", the old "sticky mode") | "Other harnesses have no Custom Modes. In Claude Code an invoked skill stays in the transcript until compaction; reinvoke it or pin it from `CLAUDE.md` / `AGENTS.md`." Point at the **Custom Modes** Harness bullet. |
+| Cursor Automations, Bugbot, Cursor cloud agents, a built-in PR tool (upstream adapter's "Cursor-only features") | Covered once by the **Cursor-only features** Harness bullet: a one-line `Skipped in <harness>: <step>. <reason>.` and move on; Bugbot comments are ordinary review threads; a PR tool is the forge command. Don't rewrite per-skill steps. |
+| `https://github.com/cursor/plugins/blob/main/pstack/<path>` links | Covered once by the **Skill folders** Harness bullet: read the local copy when it exists, don't fetch. |
+| `~/.claude/rules/pstack-models.md`, `<model> <effort>` role values (upstream's Claude Code plugin) | The mirror keeps `~/.agents/pstack-models.md` with Cursor slugs; the **Model settings** Harness bullet reads the plugin's file as a fallback. Don't switch `setup-pstack` to it. |
 | `/add-plugin pstack`, Customize sidebar | Add `npx skills add <repo url>` from the mirror README. |
 
-Leave alone: `README.md` below the `mirror:end` marker, `docs/guide/*` (upstream prose, mentions Cursor as the product and that is fine), `docs/harness/claude-code.md` below its mirror note (upstream's adapter for Cursor's Claude Code plugin; fold new rows into the Harness section instead of editing it), `automations/benny/*` (Cursor cloud automations by design), `.cursor-plugin/plugin.json`, and `scripts/watch-pr/*` GitHub code that merely names Bugbot as a reviewer.
+Leave alone: `README.md` below the `mirror:end` marker, `docs/guide/*` (upstream prose, mentions Cursor as the product and that is fine), `docs/harness/claude-code.md` below its mirror note (upstream's adapter for Cursor's Claude Code plugin; fold new rows into the Harness section instead of editing it), `automations/benny/*` and `skills/make-bot-ui/` (Cursor Automations by design), `.cursor-plugin/plugin.json`, and `scripts/watch-pr/*` GitHub code that merely names Bugbot as a reviewer.
 
 ## Beyond the grep
 
@@ -75,7 +78,7 @@ The report in `sync/sync.sh` only catches known patterns. On every sync also che
 
 backnotprop's rewrites were the seed. These are ours and must survive syncs:
 
-- Harness section bullets **Claude Code specifics** and **T3 Code specifics** in `skills/poteto-mode/SKILL.md`.
+- Harness section bullets **Claude Code specifics**, **T3 Code specifics**, and **Cursor-only features**, plus the plugin-file fallback in **Model settings** and the upstream-link sentence in **Skill folders**, in `skills/poteto-mode/SKILL.md`.
 - Pointers back to the Harness section in `playbooks/orchestrate.md`, `playbooks/opening-a-pr.md`, `playbooks/multi-phase-plan.md`, `playbooks/autopilot-full.md`, `playbooks/shipping.md`, and `skills/ketchup/SKILL.md`, which backnotprop left Cursor-only.
 - The non-Cursor skill-folder search in `agents/poteto-agent.md`.
 - GNU/BSD portability in `scripts/worktree-audit.sh`.
