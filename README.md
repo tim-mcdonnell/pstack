@@ -25,7 +25,7 @@ Cursor also publishes pstack as a Claude Code plugin (`/plugin install pstack@cu
 
 Standalone skills (they don't call other pstack skills):
 
-`unslop`, `bro`, `how`, `tdd`, `typescript-best-practices`, `arena`, `swarm`, `interrogate`, `reflect`, `show-me-your-work`, `figure-it-out`, `automate-me`, `correct`, `create-formal-verification-skill`
+`unslop`, `bro`, `how`, `tdd`, `typescript-best-practices`, `arena`, `swarm`, `interrogate`, `reflect`, `show-me-your-work`, `figure-it-out`, `automate-me`, `correct`, `create-formal-verification-skill`, `statechart`
 
 Skills that call other skills. Install these together:
 
@@ -40,6 +40,12 @@ Skills that call other skills. Install these together:
 | `benchmark-checklist` | `principle-explain-the-number` |
 | `poteto-mode` | all `principle-*` skills and most of the other skills |
 | `poteto-help` | whichever skills you installed; it reads a skill before recommending it |
+
+## Runtime dependencies
+
+Most skills need only the agent. These need more:
+
+- `statechart`: Node, plus Java 11 or later and `tla2tools.jar` from a [TLA+ release](https://github.com/tlaplus/tlaplus/releases) (set `TLA2TOOLS` to the jar and, if `java` is not on `PATH`, `JAVA` to the binary). `--png` runs `npx @mermaid-js/mermaid-cli`, which downloads a headless Chromium on first use.
 
 ## What this mirror changes
 
@@ -201,6 +207,7 @@ to keep [`/poteto-mode`](./skills/poteto-mode/SKILL.md) on across turns, pick it
 | [`/maintain-verification-skill`](./skills/maintain-verification-skill/SKILL.md) | your verify skill's feature map has drifted from the app. source wave + one live pass, at most one PR of proven corrections. |
 | [`/create-formal-verification-skill`](./skills/create-formal-verification-skill/SKILL.md) | tests can't reach the case that breaks a race, retry, state machine, parser, or unsafe code. verifies one property with the tool that fits and generates a project-local skill to recheck it on every change. |
 | [`/maintain-formal-verification-skill`](./skills/maintain-formal-verification-skill/SKILL.md) | code your formal verification covers has changed since it was last checked. updates the model, harness, or properties to match the code, reruns, and says whether each failure is drift in the verification or a bug in the code. |
+| [`/statechart`](./skills/statechart/SKILL.md) | someone who owns the behavior needs to see it, not read a spec. draws what the user sees as a mermaid statechart generated from a tla+ model, marks each state works, still wrong, or fixed by your open pr, and draws each bug tlc finds as a numbered path. also turns an agreed chart into a tla+ skeleton, or audits the code against an existing spec. |
 | [`/unslop`](./skills/unslop/SKILL.md) | you're cleaning up writing. removes AI tells. |
 | [`/bro`](./skills/bro/SKILL.md) | you want the last message restated in plain human language, no jargon. |
 | [`/technical-writing`](./skills/technical-writing/SKILL.md) | layered doc standard (Diátaxis + Google developer style + STE + Global English) for docs, RFCs, readmes, PR descriptions, commit messages. |
