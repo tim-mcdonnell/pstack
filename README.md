@@ -25,7 +25,7 @@ Cursor also publishes pstack as a Claude Code plugin (`/plugin install pstack@cu
 
 Standalone skills (they don't call other pstack skills):
 
-`unslop`, `bro`, `how`, `tdd`, `typescript-best-practices`, `arena`, `swarm`, `interrogate`, `reflect`, `show-me-your-work`, `figure-it-out`, `automate-me`, `correct`, `create-formal-verification-skill`, `statechart`
+`unslop`, `bro`, `how`, `tdd`, `typescript-best-practices`, `arena`, `swarm`, `interrogate`, `reflect`, `show-me-your-work`, `figure-it-out`, `automate-me`, `correct`, `statechart`
 
 Skills that call other skills. Install these together:
 
@@ -37,6 +37,8 @@ Skills that call other skills. Install these together:
 | `architect` | `arena`, `how` |
 | `blast-radius` | `arena`, `how`, `why`, `unslop` |
 | `create-verification-skill` | `maintain-verification-skill` |
+| `create-formal-verification-skill` | `statechart` |
+| `ketchup-video` | `ketchup` |
 | `benchmark-checklist` | `principle-explain-the-number` |
 | `poteto-mode` | all `principle-*` skills and most of the other skills |
 | `poteto-help` | whichever skills you installed; it reads a skill before recommending it |
@@ -45,7 +47,8 @@ Skills that call other skills. Install these together:
 
 Most skills need only the agent. These need more:
 
-- `statechart`: Node, plus Java 11 or later and `tla2tools.jar` from a [TLA+ release](https://github.com/tlaplus/tlaplus/releases) (set `TLA2TOOLS` to the jar and, if `java` is not on `PATH`, `JAVA` to the binary). `--png` runs `npx @mermaid-js/mermaid-cli`, which downloads a headless Chromium on first use.
+- `statechart`: Node and npm. TLC and Java come from [mise](https://mise.jdx.dev), which the first run uses to install TLC 1.7.4 and Temurin 25 (about 305 MB, needs the network). Without mise, set `TLA2TOOLS` to `tla2tools.jar` from a [TLA+ release](https://github.com/tlaplus/tlaplus/releases) and `JAVA` to a Java 11 or later binary (with only `TLA2TOOLS` set, `java` comes from `PATH`). `--png` and `render` install Pele and `@resvg/resvg-js` with npm into `~/.cache/statechart/` on first use. `fc-match` (fontconfig) is optional and gives the PNG the system font's widths.
+- `ketchup-video`: a way to draw slides and encode a video, such as a headless browser for the frames and ffmpeg. The skill names no tool.
 
 ## What this mirror changes
 
@@ -80,6 +83,8 @@ in claude code:
 /plugin marketplace add cursor/plugins
 /plugin install pstack@cursor-plugins
 ```
+
+claude code leaves auto-update off for third-party marketplaces, so pstack stays on the version you installed. to turn it on, run `/plugin`, open the **marketplaces** tab, select `cursor-plugins`, and choose **enable auto-update**. to update once by hand, run `claude plugin update pstack@cursor-plugins`.
 
 claude code prefixes plugin commands and agents, so `/poteto-mode` is `/pstack:poteto-mode`. the [claude code adapter](./docs/harness/claude-code.md) maps every other cursor name. in claude code, `/pstack:setup-pstack` writes your model choices to `~/.claude/rules/pstack-models.md`, and a step that needs a cursor-only feature, such as bugbot or automations, is skipped with a one-line note.
 
@@ -186,6 +191,7 @@ to keep [`/poteto-mode`](./skills/poteto-mode/SKILL.md) on across turns, pick it
 | [`/why`](./skills/why/SKILL.md) | you want to know why something was built this way. discovers available MCPs at run time and queries each evidence category in parallel (source control, issue tracker, long-form docs, real-time chat, infra observability, error tracking, analytics warehouse). |
 | [`/recall`](./skills/recall/SKILL.md) | you're starting or resuming work and want your recent context on a topic rebuilt from your own chat history and the shared record, handed back as a tight current-state brief. |
 | [`/ketchup`](./skills/ketchup/SKILL.md) | you want what changed in this chat since your last message, in plain words and small visuals, with every item waiting on you listed and decidable from the reply alone, even when that makes the reply long. |
+| [`/ketchup-video`](./skills/ketchup-video/SKILL.md) | you want the `/ketchup` catch-up as a short silent video of slides, with the calls waiting on you as text under it. |
 | [`/blast-radius`](./skills/blast-radius/SKILL.md) | you have a small-looking change and want to know what else it could break, with the one fact it's safe because of proven by running code, not asserted. |
 | [`/architect`](./skills/architect/SKILL.md) | you're about to write code that crosses a function boundary and want the caller's usage, types, and module shape settled first. |
 | [`/arena`](./skills/arena/SKILL.md) | you want N parallel attempts at the same thing, then to grab the best parts of each. |

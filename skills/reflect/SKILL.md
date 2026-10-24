@@ -60,6 +60,8 @@ Present the synthesizer's full Accepted / Rejected / Backlog output and wait for
 
 File each Backlog item to your team's devex or backlog tracker without waiting. Only the Accepted list waits for approval.
 
+Never edit a skill under `plugins/cache/`. Before approval, show its destination, `.cursor/skills/<skill>/` or `~/.cursor/skills/<skill>/`. After approval, copy the skill folder there and edit the copy. In other harnesses the same holds for `~/.claude/plugins/cache/` and for any skill copy that an installer such as `npx skills add` overwrites on update. Show a destination from the **Skill folders** bullet of the **poteto-mode** Harness section instead, such as `.claude/skills/<skill>/` or `~/.claude/skills/<skill>/` in Claude Code, and copy the skill there when the installed copy is not already in that folder. Never open a PR or push.
+
 Follow each approved row's Routing exactly:
 
 - Trivial existing-skill edit (a one-line bullet, a tightened sentence, a stale fact corrected): the parent does it directly.
