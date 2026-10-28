@@ -63,6 +63,8 @@ The authoritative mapping lives in the **Harness** section of `skills/poteto-mod
 | `~/.claude/rules/pstack-models.md`, `<model> <effort>` role values (upstream's Claude Code plugin) | The mirror keeps `~/.agents/pstack-models.md` with Cursor slugs; the **Model settings** Harness bullet reads the plugin's file as a fallback. Don't switch `setup-pstack` to it. |
 | `plugins/cache/` (Cursor's installed-plugin cache, "never edit a skill under") | Add `~/.claude/plugins/cache/` and `npx skills add`-managed folders, and point at the **Skill folders** Harness bullet for the editable destination. |
 | An image or video "embedded" in the reply (`ketchup`, `ketchup-video`) | Covered by the **Claude Code specifics** (give the absolute path) and **T3 Code specifics** (Markdown with the absolute path) Harness bullets; add a one-line pointer in a skill whose whole output is the embed. |
+| The agent's store ("path in the system prompt"), Project store, Project tracker (`notes.md`) | Covered once by the **Agent store** Harness bullet (`~/.agents/pstack-store/<slug>/`); add a parenthetical pointer where a playbook writes there (`orchestrate.md`, `autopilot-full.md`, `multi-phase-plan.md`). |
+| Forking a running worker (Orchestrate), PR and CI event subscriptions | Forking: the **Subagents** Harness bullet (fresh worker in that worker's worktree, report pasted). Subscriptions: `watch_pull_request` in the **T3 Code specifics** bullet; the playbook already says "when your harness has them". |
 | `/add-plugin pstack`, Customize sidebar | Add `npx skills add <repo url>` from the mirror README. |
 
 Leave alone: `README.md` below the `mirror:end` marker, `docs/guide/*` (upstream prose, mentions Cursor as the product and that is fine), `docs/harness/claude-code.md` below its mirror note (upstream's adapter for Cursor's Claude Code plugin; fold new rows into the Harness section instead of editing it), `automations/benny/*` and `skills/make-bot-ui/` (Cursor Automations by design), `.cursor-plugin/plugin.json`, and `scripts/watch-pr/*` GitHub code that merely names Bugbot as a reviewer.
@@ -80,7 +82,7 @@ The report in `sync/sync.sh` only catches known patterns. On every sync also che
 
 backnotprop's rewrites were the seed. These are ours and must survive syncs:
 
-- Harness section bullets **Claude Code specifics**, **T3 Code specifics**, and **Cursor-only features**, plus the plugin-file fallback in **Model settings** and the upstream-link sentence in **Skill folders**, in `skills/poteto-mode/SKILL.md`.
+- Harness section bullets **Agent store**, **Claude Code specifics**, **T3 Code specifics**, and **Cursor-only features**, the worker-fork sentence in **Subagents**, plus the plugin-file fallback in **Model settings** and the upstream-link sentence in **Skill folders**, in `skills/poteto-mode/SKILL.md`.
 - Pointers back to the Harness section in `playbooks/orchestrate.md`, `playbooks/opening-a-pr.md`, `playbooks/multi-phase-plan.md`, `playbooks/autopilot-full.md`, `playbooks/shipping.md`, `skills/ketchup/SKILL.md`, and `skills/ketchup-video/SKILL.md`, which backnotprop left Cursor-only.
 - The non-Cursor skill-folder search in `agents/poteto-agent.md`.
 - The multi-harness transcript search (`transcript_dirs`: Cursor, Claude Code, Pi; main repo and worktree) in `scripts/worktree-audit.sh`. Upstream ships its own GNU/BSD `stat`/`date` switch (`stat_fmt`, `fmt_day`) since 0.15.32; the mirror uses it rather than a second copy.
