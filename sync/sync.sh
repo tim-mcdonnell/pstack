@@ -26,7 +26,9 @@ cd "$REPO"
 
 fetch_upstream() {
   mkdir -p "$WORK"
-  if [ -d "$CLONE/.git" ]; then
+  # A partial cache (tmp cleaners strip HEAD/config from old files) fails rev-parse; re-clone it.
+  if [ -d "$CLONE/.git" ] && git -C "$CLONE" rev-parse -q --verify HEAD >/dev/null 2>&1 \
+     && [ -f "$CLONE/$UPSTREAM_DIR/.cursor-plugin/plugin.json" ]; then
     git -C "$CLONE" fetch -q --depth 1 origin main && git -C "$CLONE" reset -q --hard origin/main
   else
     rm -rf "$CLONE"
